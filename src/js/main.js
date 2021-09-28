@@ -244,4 +244,54 @@ window.addEventListener('DOMContentLoaded', () => {
         '.menu .container',
         'menu__item'
     ).render();
+
+    // POST for forms
+    const forms = document.querySelectorAll('form');
+
+    const message = {
+        loading: 'Loading...',
+        success: 'Thanks! We will connect with you soon.',
+        failure: 'Something wrong... Try again leter.'
+    };
+
+    forms.forEach(item => {
+        postData(item);
+    });
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); /* отменяем стандартное повидение браузера при событии submit */
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+            
+            const req = new XMLHttpRequest();
+            req.open('POST', 'server.php');
+
+            /* 2 формата передачи данных: 
+            1) через объект FormData
+            2) формат JSON */
+            // FormData - спец. объект, который позволяет с определенной формы сформировать набор данных которые, например, заполнил пользователь длядальнейшей их обработке на бэк-енд.
+            // формируется в формате ключ-значение
+
+            // req.setRequestHeader('Content-type', 'multipart/form-data'); когда используем formData+XMLhttpreq, заголовок устанавливать не нужно, он установ. автоматически.
+
+            const formData = new FormData(form);
+            // в верстке, в html тэгах, что собирают инф.(input, textarea, option) ВСЕГДА необходим атрибут "name"
+
+            req.send(formData);
+
+            req.addEventListener('load', () => {
+                if (req.status === 200) {
+                    console.log(req.response);
+                    statusMessage.textContent = message.success;
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            }); /* отслеживаем конечную загрузку нашего запроса */
+
+        });
+    }
 });
