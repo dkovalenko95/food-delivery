@@ -287,6 +287,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (req.status === 200) {
                     console.log(req.response);
                     statusMessage.textContent = message.success;
+                    form.reset(); /* сброс формы */
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 3000);
                 } else {
                     statusMessage.textContent = message.failure;
                 }
