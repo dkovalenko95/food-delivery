@@ -278,10 +278,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
             // req.setRequestHeader('Content-type', 'multipart/form-data'); когда используем formData+XMLhttpreq, заголовок устанавливать не нужно, он установ. автоматически.
 
+
+
+            // POST with JSON
+            req.setRequestHeader('Content-type', 'application/json');
+
             const formData = new FormData(form);
             // в верстке, в html тэгах, что собирают инф.(input, textarea, option) ВСЕГДА необходим атрибут "name"
+            const object = {};
+            formData.forEach(function(value, key) {
+                object[key] = value;
+            });
+            const json = JSON.stringify(object); /* превращаем обычный объект в json */
 
-            req.send(formData);
+            req.send(json);
 
             req.addEventListener('load', () => {
                 if (req.status === 200) {
