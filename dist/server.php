@@ -1,5 +1,5 @@
 <?php
-$_POST =json_decode(file_get_contents("php://index"), true); /* получаем json данные на php */
+$_POST = json_decode(file_get_contents("php://input"), true); /* получаем json данные на php */
 echo var_dump($_POST);
 // эта команда берет данные которые нам пришли из клиента, превращает их в строку и показывает обратно на клиенте.
 // это response, который будет приходить с сервера.
