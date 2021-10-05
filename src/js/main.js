@@ -1,5 +1,7 @@
 'use strict';
 
+const { data } = require("browserslist");
+
 window.addEventListener('DOMContentLoaded', () => {
 
     // TABS
@@ -329,6 +331,11 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
+
+
+    fetch('db.json')
+        .then(data => data.json())
+        .then(result => console.log(result));
 
     // HOW FETCH WORKS
     // fetch('https://jsonplaceholder.typicode.com/posts/', {
