@@ -41,6 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     // TIMER
 
     const deadline = '2021, 09, 15' ;
@@ -106,6 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setClock('.timer', deadline);
 
+
     // MODAL
 
     const modalBtn = document.querySelectorAll('[data-modal]'),          
@@ -165,6 +167,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('scroll', showModalScroll);
     
+
     // 'Class' usage for Cards
 
     class MenuCard {
@@ -243,7 +246,9 @@ window.addEventListener('DOMContentLoaded', () => {
         'menu__item'
     ).render();
 
+
     // POST for forms
+    
     const forms = document.querySelectorAll('form');
 
     const message = {
@@ -258,7 +263,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function postData(form) {
         form.addEventListener('submit', (e) => {
-            e.preventDefault(); /* отменяем стандартное повидение браузера при событии submit */
+            e.preventDefault();
 
             const statusMessage = document.createElement('img');
             statusMessage.src = message.loading;
@@ -268,44 +273,34 @@ window.addEventListener('DOMContentLoaded', () => {
             `;
             form.insertAdjacentElement('afterend', statusMessage);
             // метод размещения элементов в верстке
-            
-            const req = new XMLHttpRequest();
-            req.open('POST', 'server.php');
 
-            /* 2 формата передачи данных: 
-            1) через объект FormData
-            2) формат JSON */
-            // FormData - спец. объект, который позволяет с определенной формы сформировать набор данных которые, например, заполнил пользователь длядальнейшей их обработке на бэк-енд.
-            // формируется в формате ключ-значение
-
-            // req.setRequestHeader('Content-type', 'multipart/form-data'); когда используем formData+XMLhttpreq, заголовок устанавливать не нужно, он установ. автоматически.
-
-
-
-            // POST with JSON
-            req.setRequestHeader('Content-type', 'application/json');
 
             const formData = new FormData(form);
-            // в верстке, в html тэгах, что собирают инф.(input, textarea, option) ВСЕГДА необходим атрибут "name"
+            //в html тэгах, что собирают инф.(input, textarea, option) ВСЕГДА необходим атрибут "name"
+            
             const object = {};
             formData.forEach(function(value, key) {
                 object[key] = value;
             });
-            const json = JSON.stringify(object); /* превращаем обычный объект в json */
+            const json = JSON.stringify(object);
 
-            req.send(json);
-
-            req.addEventListener('load', () => {
-                if (req.status === 200) {
-                    console.log(req.response);
-                    showThanksModal(message.success);
-                    form.reset(); /* сброс формы */
-                    statusMessage.remove(); 
-                } else {
-                    showThanksModal(message.failure);
-                }
-            }); /* отслеживаем конечную загрузку нашего запроса */
-
+            fetch('server1.php', {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+            },
+                body: json
+            })
+            .then(data => data.text())
+            .then(data => {
+                console.log(data);
+                showThanksModal(message.success);
+                statusMessage.remove(); 
+            }).catch(() => {
+                showThanksModal(message.failure);
+            }).finally(() => {
+                form.reset();
+            });
         });
     }
 
@@ -333,4 +328,16 @@ window.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }, 4000);
     }
+
+
+    // HOW FETCH WORKS
+    // fetch('https://jsonplaceholder.typicode.com/posts/', {
+    //     method: "POST",
+    //     body: JSON.stringify({name: 'Alex'}),
+    //     headers: {
+    //         'Content-type': 'application/json'
+    //     }
+    // })
+    //     .then(response => response.json())
+    //     .then(json => console.log(json));
 });
