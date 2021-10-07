@@ -2045,13 +2045,19 @@ window.addEventListener('DOMContentLoaded', () => {
     return await result.json();
   }; // 2 WAYS TO CREATE 'MENU-CARD' BY 'GET' REQUEST
   // 1)
-  // getResource('http://localhost:3000/menu')
-  //     .then(data => {
-  //         data.forEach(({img, altimg, title, descr, price}) => {
-  //             new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-  //         });
-  //     });
-  // 2)
+
+
+  getResource('http://localhost:3000/menu').then(data => {
+    data.forEach(({
+      img,
+      altimg,
+      title,
+      descr,
+      price
+    }) => {
+      new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+    });
+  }); // 2)
   // getResource('http://localhost:3000/menu') 
   //     .then(data => createCard(data));
   //     function createCard(data) {
@@ -2072,19 +2078,13 @@ window.addEventListener('DOMContentLoaded', () => {
   //         });
   //     }
   // AXIOS USAGE (3 way to create menu-card by 'get' req)
-
-
-  axios.get('http://localhost:3000/menu').then(data => {
-    data.data.forEach(({
-      img,
-      altimg,
-      title,
-      descr,
-      price
-    }) => {
-      new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-    });
-  }); // FORMS (POST, GET)
+  // axios.get('http://localhost:3000/menu')
+  //     .then(data => {
+  //         data.data.forEach(({img, altimg, title, descr, price}) => {
+  //             new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+  //         });
+  //     });
+  // FORMS (POST, GET)
 
   const forms = document.querySelectorAll('form');
   const message = {
