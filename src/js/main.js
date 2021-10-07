@@ -239,12 +239,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // 1)
 
-    getResource('http://localhost:3000/menu')
-        .then(data => {
-            data.forEach(({img, altimg, title, descr, price}) => {
-                new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-            });
-        });
+    // getResource('http://localhost:3000/menu')
+    //     .then(data => {
+    //         data.forEach(({img, altimg, title, descr, price}) => {
+    //             new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+    //         });
+    //     });
 
     // 2)
 
@@ -270,6 +270,16 @@ window.addEventListener('DOMContentLoaded', () => {
     //             document.querySelector('.menu .content').append(element);
     //         });
     //     }
+
+
+
+    // AXIOS USAGE (3 way to create menu-card by 'get' req)
+    axios.get('http://localhost:3000/menu')
+        .then(data => {
+            data.data.forEach(({img, altimg, title, descr, price}) => {
+                new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+            });
+        });
 
 
 
