@@ -405,4 +405,59 @@ window.addEventListener('DOMContentLoaded', () => {
     // })
     //     .then(response => response.json())
     //     .then(json => console.log(json));
+
+
+
+    // SLIDER
+    
+    let slideIndex = 1;
+    const slides = document.querySelectorAll('.offer__slide'),
+
+          prev = document.querySelector('.offer__slider-prev'),
+          next = document.querySelector('.offer__slider-next'),
+
+          total = document.querySelector('#total'),
+          current = document.querySelector('#current');
+
+    showSlides(slideIndex);
+
+    // total slides number
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else {
+        total.textContent = slides.length;
+    }
+
+    function showSlides(index) {
+        if (index > slides.length) {
+            slideIndex = 1;
+        }
+        if (index< 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach((slide) => slide.style.display = 'none');
+
+        slides[slideIndex - 1].style.display = 'block'; // Как ваша самостоятельная работа - переписать на использование классов show/hide
+        
+        if (slides.length < 10) {
+            current.textContent =  `0${slideIndex}`;
+        } else {
+            current.textContent =  slideIndex;
+        }
+    }
+
+    function switchSlide (n) {
+        showSlides(slideIndex += n);
+    }
+
+    prev.addEventListener('click', function(){
+        switchSlide(-1);
+    });
+
+    next.addEventListener('click', function(){
+        switchSlide(1);
+    });
+    
+
 });
