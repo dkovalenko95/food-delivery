@@ -89,28 +89,10 @@ function watch() {
     ];
 } 
 
-// gulp.task("watch", () => {
-//     browsersync.init({
-		// server: "./dist/",
-//     server: "../../../../Progs/OpenServer/domains/test",
-// 		port: 4000,
-// 		notify: true
-//     });
-
-//     gulp.watch("./src/index.html", gulp.parallel("copy-html"));
-//     gulp.watch("./src/icons/**/*.*", gulp.parallel("copy-assets"));
-//     gulp.watch("./src/img/**/*.*", gulp.parallel("copy-assets"));
-//     gulp.watch("./src/scss/**/*.scss", gulp.parallel("build-sass"));
-//     gulp.watch("./src/js/**/*.js", gulp.parallel("build-js"));
-//     gulp.watch("./src/*.php", gulp.parallel("copy-php"));
-// });
-
 const build = gulp.series(
   buildJS,
   gulp.parallel(copyhtml, copyAssets, buildSass, buildJS, copyphp)
 );
-
-// gulp.task("build", gulp.parallel("copy-html", "copy-assets", "build-sass", "build-js", "copy-php"));
 
 function prod() {
   return [
@@ -158,55 +140,9 @@ function prod() {
   ];  
 }
 
-// gulp.task("prod", () => {
-//     gulp.src("./src/index.html")
-//         .pipe(gulp.dest(dist));
-//     gulp.src("./src/*.php")
-//         .pipe(gulp.dest(dist));
-//     gulp.src("./src/img/**/*.*")
-//         .pipe(gulp.dest(dist + "/img"));
-//     gulp.src("./src/icons/**/*.*")
-//         .pipe(gulp.dest(dist + "/icons"));
-
-//     gulp.src("./src/js/main.js")
-//         .pipe(webpack({
-//             mode: 'production',
-//             output: {
-//                 filename: 'script.js'
-//             },
-//             module: {
-//                 rules: [
-//                   {
-//                     test: /\.m?js$/,
-//                     exclude: /(node_modules|bower_components)/,
-//                     use: {
-//                       loader: 'babel-loader',
-//                       options: {
-//                         presets: [['@babel/preset-env', {
-//                             debug: false,
-//                             corejs: 3,
-//                             useBuiltIns: "usage"
-//                         }]]
-//                       }
-//                     }
-//                   }
-//                 ]
-//               }
-//         }))
-//         .pipe(gulp.dest(dist + '/js'));
-    
-//     return gulp.src("./src/scss/style.scss")
-//         .pipe(sass().on('error', sass.logError))
-//         .pipe(postcss([autoprefixer()]))
-//         .pipe(cleanCSS())
-//         .pipe(gulp.dest(dist + '/css'));
-// });
-
 const dev = gulp.series(
   gulp.parallel(watch, build),
   prod
 );
 
 exports.default = dev;
-
-// gulp.task("default", gulp.parallel("watch", "build"));
