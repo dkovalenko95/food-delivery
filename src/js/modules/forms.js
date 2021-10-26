@@ -121,4 +121,4 @@ function forms() {
     //     .then(json => console.log(json));
 }
 
-module.exports = forms;
+export default forms;

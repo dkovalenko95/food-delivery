@@ -1,17 +1,16 @@
 'use strict';
 
+import tabs from'./modules/tabs';
+import timer from'./modules/timer';
+import slider from'./modules/slider';
+import cards from'./modules/cards';
+import forms from'./modules/forms';
+import modal from'./modules/modal';
+import calc from'./modules/calc';
+
 const { data } = require("browserslist");
 
 window.addEventListener('DOMContentLoaded', () => {
-
-    const tabs = require('./modules/tabs');
-    const timer = require('./modules/timer');
-    const slider = require('./modules/slider');
-    const cards = require('./modules/cards');
-    const forms = require('./modules/forms');
-    const modal = require('./modules/modal');
-    const calc = require('./modules/calc');
-
     tabs();
     timer();
     slider();
@@ -19,5 +18,4 @@ window.addEventListener('DOMContentLoaded', () => {
     forms();
     modal();
     calc();
-
 });
