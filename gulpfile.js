@@ -7,7 +7,7 @@ const postcss = require("gulp-postcss");
 const browsersync = require("browser-sync");
 
 const dist = "./dist";
-// const dist = "../../../../Progs/OpenServer/domains/test";
+// const dist = "../../../../Progs/OpenServer/domains/Food_withGulp4";
 
 function copyhtml() {
   return gulp.src("./src/index.html")
@@ -75,7 +75,7 @@ function watch() {
   return [
       browsersync.init({
       server: "./dist/",
-      // server: "../../../../Progs/OpenServer/domains/test",
+      // server: "../../../../Progs/OpenServer/domains/Food_withGulp4",
       port: 4000,
       notify: true
       }),
