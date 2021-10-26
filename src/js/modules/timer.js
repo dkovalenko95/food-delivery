@@ -1,6 +1,5 @@
-function timer() {
-    const deadline = '2021-09-15' ;
-
+function timer(id, deadline) {
+    
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()), /* разница в миллисекундах */
               days = Math.floor(t / (1000 * 60 * 60 * 24)), /* Math.floor - округление числа */
@@ -60,7 +59,7 @@ function timer() {
         }
     }
 
-    setClock('.timer', deadline);
+    setClock(id, deadline);
 }
 
 export default timer;

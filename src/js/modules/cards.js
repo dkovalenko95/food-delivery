@@ -1,3 +1,5 @@
+import {getResource} from '../services/services';
+
 function cards() {
     class MenuCard {
         constructor(src, alt, title, descr, price, perentSelector, ...classes) {
@@ -43,19 +45,6 @@ function cards() {
 
     /* const div = new MenuCard();
     div.render(); */
-
-
-
-
-    const getResource = async (url) => {
-        const result = await fetch(url);
-
-        if (!result.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${result.status} `);
-        }
-
-        return await result.json();
-    };
 
 
 

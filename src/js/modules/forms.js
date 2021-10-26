@@ -1,5 +1,8 @@
-function forms() {
-    const forms = document.querySelectorAll('form');
+import {openModal, closeModal} from './modal';
+import {postData} from '../services/services';
+
+function forms(formSelector, modalTimerId) {
+    const forms = document.querySelectorAll(formSelector);
 
     const message = {
         loading: 'img/form/spinner.svg',
@@ -10,26 +13,6 @@ function forms() {
     forms.forEach(item => {
         bindPostData(item);
     });
-
-
-
-
-    // postData - отвечает за постинг данных, их отправку на сервер 
-    
-    // здесь асинхронный код - async/await позволяет правильно работать с асинхронными запросами/функциями
-    const postData = async (url, data) => {
-        const result = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: data
-        });
-
-        return await result.json();
-    };
-
-
 
 
     // bindPostData - отвечает за привязку постинга
@@ -82,7 +65,7 @@ function forms() {
     function showThanksModal(message) {
         const prevModalDialog = document.querySelector('.modal__dialog');
         prevModalDialog.classList.add('hide');
-        openModal();
+        openModal('.modal', modalTimerId);
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -98,7 +81,7 @@ function forms() {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            closeModal();
+            closeModal('.modal');
         }, 4000);
     }
 
