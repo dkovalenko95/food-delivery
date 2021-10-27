@@ -6,6 +6,8 @@ const cleanCSS = require("gulp-clean-css");
 const postcss = require("gulp-postcss");
 const browsersync = require("browser-sync");
 
+const { series, parallel } = require("gulp");
+
 const dist = "./dist";
 // const dist = "../../../../Progs/OpenServer/domains/Food_withGulp4";
 
@@ -14,17 +16,19 @@ function copyhtml() {
       .pipe(gulp.dest(dist))
       .pipe(browsersync.stream());
 }
+exports.copyhtml = copyhtml;
 
 function copyphp() {
   return gulp.src("./src/*.php")
       .pipe(gulp.dest(dist))
       .pipe(browsersync.stream());
 }
+exports.copyphp = copyphp;
 
 function buildJS() {
   return gulp.src("./src/js/main.js")
       .pipe(webpack({
-          mode: 'development',
+          mode: 'production',
           output: {
               filename: 'script.js'
           },
@@ -50,8 +54,9 @@ function buildJS() {
             }
       }))
       .pipe(gulp.dest(dist + '/js'))
-      .pipe(browsersync.stream());
+      .pipe(browsersync.stream());    
 }
+exports.buildJS = buildJS;
 
 function buildSass() {
   return gulp.src("./src/scss/**/*.scss")
@@ -59,6 +64,7 @@ function buildSass() {
       .pipe(gulp.dest(dist + '/css'))
       .pipe(browsersync.stream());
 }
+exports.buildSass = buildSass;
 
 function copyAssets() {
   return [
@@ -70,6 +76,7 @@ function copyAssets() {
           .pipe(browsersync.stream())
   ];
 }
+exports.copyAssets = copyAssets;
 
 function watch() {
   return [
@@ -88,61 +95,55 @@ function watch() {
       gulp.watch("./src/*.php", gulp.parallel(copyphp)),
     ];
 } 
+exports.watch = watch;
 
-const build = gulp.series(
-  buildJS,
-  gulp.parallel(copyhtml, copyAssets, buildSass, buildJS, copyphp)
-);
+// function prod() {
+//   return [
+//     gulp.src("./src/index.html")
+//         .pipe(gulp.dest(dist)),
+//     gulp.src("./src/*.php")
+//         .pipe(gulp.dest(dist)),
+//     gulp.src("./src/img/**/*.*")
+//         .pipe(gulp.dest(dist + "/img")),
+//     gulp.src("./src/icons/**/*.*")
+//         .pipe(gulp.dest(dist + "/icons")),
+//     gulp.src("./src/scss/style.scss")
+//         .pipe(sass().on('error', sass.logError))
+//         .pipe(postcss([autoprefixer()]))
+//         .pipe(cleanCSS())
+//         .pipe(gulp.dest(dist + '/css')),
 
-function prod() {
-  return [
-    gulp.src("./src/index.html")
-        .pipe(gulp.dest(dist)),
-    gulp.src("./src/*.php")
-        .pipe(gulp.dest(dist)),
-    gulp.src("./src/img/**/*.*")
-        .pipe(gulp.dest(dist + "/img")),
-    gulp.src("./src/icons/**/*.*")
-        .pipe(gulp.dest(dist + "/icons")),
+//     gulp.src("./src/js/main.js")
+//         .pipe(webpack({
+//             mode: 'production',
+//             output: {
+//                 filename: 'bundle.js'
+//             },
+//             module: {
+//                 rules: [
+//                   {
+//                     test: /\.m?js$/,
+//                     exclude: /(node_modules|bower_components)/,
+//                     use: {
+//                       loader: 'babel-loader',
+//                       options: {
+//                         presets: [['@babel/preset-env', {
+//                             debug: false,
+//                             corejs: 3,
+//                             useBuiltIns: "usage"
+//                         }]]
+//                       }
+//                     }
+//                   }
+//                 ]
+//               }
+//         }))
+//         .pipe(gulp.dest(dist + '/js'))
+//   ];  
+// }
+// exports.prod = prod;
 
-    gulp.src("./src/js/main.js")
-        .pipe(webpack({
-            mode: 'production',
-            output: {
-                filename: 'script.js'
-            },
-            module: {
-                rules: [
-                  {
-                    test: /\.m?js$/,
-                    exclude: /(node_modules|bower_components)/,
-                    use: {
-                      loader: 'babel-loader',
-                      options: {
-                        presets: [['@babel/preset-env', {
-                            debug: false,
-                            corejs: 3,
-                            useBuiltIns: "usage"
-                        }]]
-                      }
-                    }
-                  }
-                ]
-              }
-        }))
-        .pipe(gulp.dest(dist + '/js')),
-
-    gulp.src("./src/scss/style.scss")
-        .pipe(sass().on('error', sass.logError))
-        .pipe(postcss([autoprefixer()]))
-        .pipe(cleanCSS())
-        .pipe(gulp.dest(dist + '/css'))
-  ];  
-}
-
-const dev = gulp.series(
-  gulp.parallel(watch, build),
-  prod
-);
+// const production = prod;
+const dev = parallel(watch, copyhtml, copyphp, copyAssets, buildSass, buildJS);
 
 exports.default = dev;
